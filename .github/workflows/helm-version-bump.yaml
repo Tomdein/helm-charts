@@ -1,0 +1,46 @@
+# .github/workflows/helm-release.yml
+name: Release Helm Charts
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'charts/**'
+
+jobs:
+  version-bump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.PAT_TOKEN }}
+
+      - name: Detect changed charts
+        id: changes
+        run: |
+          CHANGED_CHARTS=$(git diff --name-only HEAD~1 | grep "^charts/" | cut -d/ -f2 | sort -u)
+          echo "charts=$CHANGED_CHARTS" >> $GITHUB_OUTPUT
+
+      - name: Bump chart versions
+        run: |
+          for chart in ${{ steps.changes.outputs.charts }}; do
+            CHART_PATH="charts/$chart/Chart.yaml"
+            if [ -f "$CHART_PATH" ]; then
+              # Get current version
+              CURRENT=$(yq '.version' "$CHART_PATH")
+              # Bump patch version
+              NEW=$(echo $CURRENT | awk -F. '{print $1"."$2"."$3+1}')
+              # Update Chart.yaml
+              yq -i ".version = \"$NEW\"" "$CHART_PATH"
+              echo "Bumped $chart from $CURRENT to $NEW"
+            fi
+          done
+
+      - name: Commit version bumps
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add charts/*/Chart.yaml
+          git diff --staged --quiet || git commit -m "chore: bump chart versions"
+          git push

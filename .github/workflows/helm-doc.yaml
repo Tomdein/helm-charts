@@ -1,0 +1,33 @@
+# .github/workflows/helm-release.yml
+name: Release Helm Charts
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'charts/**'
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate docs
+        uses: docker://jnorwood/helm-docs:latest
+        with:
+          args: --chart-search-root=charts
+
+      - name: Check for changes
+        id: changes
+        run: |
+          git diff --exit-code charts/*/README.md || echo "changed=true" >> $GITHUB_OUTPUT
+
+      - name: Commit docs
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add charts/*/README.md
+          git commit -m "docs: update chart documentation"
+          git push
