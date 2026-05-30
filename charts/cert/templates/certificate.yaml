@@ -1,0 +1,40 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ .Values.certificate.name }}
+  namespace: {{ .Values.namespace }}
+spec:
+  {{- if .Values.certificate.usages }}
+  usages: {{- toYaml .Values.certificate.usages | nindent 4 }}
+  {{- end }}
+  {{- if .Values.certificate.commonName }}
+  commonName: {{ .Values.certificate.commonName }}
+  {{- end }}
+  secretName: {{ .Values.certificate.name ~ "-secret" }}
+  {{- if .Values.certificate.dnsNames }}
+  dnsNames: {{- toYaml .Values.certificate.dnsNames | nindent 4 }}
+  {{- end }}
+  {{- if .Values.certificate.ipAddresses }}
+  ipAddresses: {{- toYaml .Values.certificate.ipAddresses | nindent 4 }}
+  {{- end }}
+  privateKey:
+    algorithm: Ed25519
+    encoding: PKCS8
+    rotationPolicy: Always
+  issuerRef:
+    name: {{ .Values.certificate.issuerRef.name }}
+    kind: {{ .Values.certificate.issuerRef.kind }}
+    group: {{ .Values.certificate.issuerRef.group }}
+
+  duration: {{ .Values.certificate.duration }}
+  renewBefore: {{ .Values.certificate.renewBefore }}
+  isCa: {{ .Values.certificate.isCa }}
+  {{- if .Values.certificate.secretTemplate }}
+  secretTemplate:
+    {{- if .Values.certificate.secretTemplate.annotations }}
+    annotations: {{- toYaml .Values.certificate.secretTemplate.annotations | nindent 6 }}
+    {{- end }}
+    {{- if .Values.certificate.secretTemplate.labels }}
+    labels: {{- toYaml .Values.certificate.secretTemplate.labels | nindent 6 }}
+    {{- end }}
+  {{- end }}

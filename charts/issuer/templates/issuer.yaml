@@ -1,0 +1,25 @@
+apiVersion: cert-manager.io/v1
+kind: {{ .Values.kind }}
+metadata:
+  name: {{ .Values.issuer.name }}
+  namespace: {{ .Values.namespace }}
+spec:
+  {{- if .Values.issuer.selfSigned }}
+  selfSigned: {}
+  {{- else if .Values.issuer.ca }}
+  ca:
+    secretName: {{ .Values.issuer.ca.secretName }}
+  {{- end }}
+  {{- if .Values.issuer.acme }}
+  acme:
+    server: {{ .Values.issuer.acme.server }}
+    email: {{ .Values.issuer.acme.email }}
+    privateKeySecretRef:
+      name: {{ .Values.issuer.acme.privateKeySecretRef.name }}
+    solvers:
+    {{- range .Values.issuer.acme.solvers }}
+    - http01:
+        ingress:
+          class: {{ .ingress.class }}
+    {{- end }}
+  {{- end }}

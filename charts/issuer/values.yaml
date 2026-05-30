@@ -1,0 +1,23 @@
+# https://cloudnative-pg.io/docs/devel/certificates#cert-manager-example-1:~:text=size%3A%201Gi-,You%20can%20find%20a%20complete%20example%20using%20cert%2Dmanager%20to%20manage%20both%20server%20and%20client%20CA%20and%20certificates%20in%20the%20cluster%2Dexample%2Dcert%2Dmanager.yaml%20deployment%20manifest.,-Client%20certificate%E2%80%8B
+# https://cloudnative-pg.io/docs/assets/files/cluster-example-cert-manager-70006d78c99f9f121cfba3e797e5f728.yaml
+
+namespace: cluster-certs
+
+kind: ClusterIssuer
+issuer:
+  name: cluster-issuer
+
+  # selfSigned: {} Overrides all other settings and creates a self-signed certificate issuer
+  ca:
+    secretName: cluster-ca-secret-name
+
+  # acme:
+  #   profile: tlsserver
+  #   server: https://acme-v02.api.letsencrypt.org/directory
+  #   email: xyz@gmail.com
+  #   privateKeySecretRef:
+  #     name: {{ .Values.issuer.name ~ "-account-key" }}
+  #   solvers:
+  #   - http01:
+  #       ingress:
+  #         class: traefik
