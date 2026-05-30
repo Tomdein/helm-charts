@@ -3,6 +3,16 @@ entries:
   cert:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2026-05-30T16:45:46.104107155Z"
+    description: Certificate management with cert-manager
+    digest: 29005e2760e74c3e4ff22073c258e3aa732a19702e6abb284c7efe0e7ebed832
+    name: cert
+    type: application
+    urls:
+    - https://github.com/Tomdein/helm-charts/releases/download/cert-0.1.3/cert-0.1.3.tgz
+    version: 0.1.3
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2026-05-30T14:23:12.050155639Z"
     description: Certificate management with cert-manager
     digest: a685ea71bb29638d4dba86c1ffdbeae3eec592434fb7ea0e726fd7eb15f81f8f
@@ -14,6 +24,16 @@ entries:
   issuer:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2026-05-30T16:45:46.216145184Z"
+    description: Certificate issuer management with cert-manager
+    digest: d248476d20c4db5ae30c345c6140fc9cd580f729481d0f5cdbd1310049b29371
+    name: issuer
+    type: application
+    urls:
+    - https://github.com/Tomdein/helm-charts/releases/download/issuer-0.1.3/issuer-0.1.3.tgz
+    version: 0.1.3
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2026-05-30T14:23:12.152001873Z"
     description: Certificate issuer management with cert-manager
     digest: 7b1fa429c1890db5c526fcbbe8029bb686c05ac6aaa23fb30c4cd46744118e4c
@@ -22,4 +42,4 @@ entries:
     urls:
     - https://github.com/Tomdein/helm-charts/releases/download/issuer-0.1.2/issuer-0.1.2.tgz
     version: 0.1.2
-generated: "2026-05-30T14:23:12.15200669Z"
+generated: "2026-05-30T16:45:46.216160367Z"
