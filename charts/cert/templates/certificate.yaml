@@ -10,7 +10,7 @@ spec:
   {{- if .Values.certificate.commonName }}
   commonName: {{ .Values.certificate.commonName }}
   {{- end }}
-  secretName: {{ .Values.certificate.name ~ "-secret" }}
+  secretName: {{ .Values.certificate.name }}-secret
   {{- if .Values.certificate.dnsNames }}
   dnsNames: {{- toYaml .Values.certificate.dnsNames | nindent 4 }}
   {{- end }}
