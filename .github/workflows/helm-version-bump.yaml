@@ -2,10 +2,10 @@
 name: Bump Helm Chart Versions
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'charts/**'
+  workflow_run:
+    workflows: ["Lint Helm Charts"]
+    types:
+      - completed
 
 jobs:
   version-bump:

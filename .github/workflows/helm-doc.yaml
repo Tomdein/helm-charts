@@ -2,10 +2,10 @@
 name: Generate Helm Chart Documentation
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'charts/**'
+  workflow_run:
+    workflows: ["Lint Helm Charts", "Bump Helm Chart Versions"]
+    types:
+      - completed
 
 jobs:
   docs:
