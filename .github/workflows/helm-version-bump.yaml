@@ -1,7 +1,8 @@
-# .github/workflows/helm-version-bump.yml
+# .github/workflows/helm-version-bump.yaml
 name: Bump Helm Chart Versions
 
 on:
+  workflow_dispatch:
   workflow_run:
     workflows: ["Lint Helm Charts"]
     types:
@@ -22,8 +23,8 @@ jobs:
       - name: Detect changed charts
         id: changes
         run: |
-          CHANGED_CHARTS=$(git diff --name-only HEAD~1 | grep "^charts/" | cut -d/ -f2 | sort -u)
-          echo "charts=$CHANGED_CHARTS" >> $GITHUB_OUTPUT
+          CHANGED_CHARTS=$(git diff --name-only HEAD~1 | grep "^charts/" | cut -d/ -f2 | sort -u | xargs || true)
+          echo "charts=$CHANGED_CHARTS" >> "$GITHUB_OUTPUT"
 
       - name: Bump chart versions
         run: |
@@ -33,7 +34,7 @@ jobs:
               # Get current version
               CURRENT=$(yq '.version' "$CHART_PATH")
               # Bump patch version
-              NEW=$(echo $CURRENT | awk -F. '{print $1"."$2"."$3+1}')
+              NEW=$(echo "$CURRENT" | awk -F. '{print $1"."$2"."$3+1}')
               # Update Chart.yaml
               yq -i ".version = \"$NEW\"" "$CHART_PATH"
               echo "Bumped $chart from $CURRENT to $NEW"
