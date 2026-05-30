@@ -1,5 +1,5 @@
-# .github/workflows/helm-release.yml
-name: Release Helm Charts
+# .github/workflows/helm-doc.yaml
+name: Generate Helm Chart Documentation
 
 on:
   push:
