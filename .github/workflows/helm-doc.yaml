@@ -3,7 +3,7 @@ name: Generate Helm Chart Documentation
 
 on:
   workflow_run:
-    workflows: ["Lint Helm Charts", "Bump Helm Chart Versions"]
+    workflows: ["Bump Helm Chart Versions"]
     types:
       - completed
 
